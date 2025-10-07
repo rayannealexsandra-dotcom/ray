@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew's Scavenger Hunt</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #111;
+        color: #eee;
+        padding: 20px;
+    }
+    .container {
+        max-width: 700px;
+        margin: auto;
+        background-color: #222;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px #000;
+    }
+    input, button, textarea {
+        font-size: 16px;
+        padding: 10px;
+        margin: 10px 0;
+        width: 100%;
+        border-radius: 5px;
+        border: none;
+    }
+    button {
+        cursor: pointer;
+        background-color: #ff4081;
+        color: #fff;
+        font-weight: bold;
+    }
+    button:hover {
+        background-color: #e73370;
+    }
+    .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div id="content"></div>
+    <input type="text" id="answer" class="hidden" placeholder="Type your answer here">
+    <textarea id="textAnswer" class="hidden" placeholder="Type your memory here"></textarea>
+    <button id="submitBtn" class="hidden">Submit</button>
+</div>
+
+<script>
+const content = document.getElementById("content");
+const answerInput = document.getElementById("answer");
+const textInput = document.getElementById("textAnswer");
+const submitBtn = document.getElementById("submitBtn");
+
+let stage = 0;
+
+const flow = [
+    {
+        type: "message",
+        text: `Oh, hi Andrew… 👀
+Welcome to the game.
+
+To reach your prize, you’ll have to prove yourself first.
+There will be riddles, clues, and maybe a few traps (depending on how smart you are 😏)
+But before the *real* adventure begins, you need to show me that you *deserve* to play.
+
+So here’s your first little enigma.
+Solve it… and the hunt begins. 💋`
+    },
+    {
+        type: "riddle",
+        text: `Riddle: 
+Some Evenings People Try Every Method Because Every Riddle Feels Impossible — Remember, Secrets Tell.`,
+        answer: ["september first", "september 1", "sept 1", "09/01", "9/1"]
+    },
+    {
+        type: "text",
+        text: `Nicely done… you’ve cracked the enigma. 💖
+But let’s see if your memory is as sharp as your brain.
+Tell me — what happened on that day?
+(Type it in a few words — be honest, be detailed… or flirty if you remember 😏)`
+    },
+    {
+        type: "message",
+        text: `Mmm… I see you remember… someone’s paying *really* close attention 😉
+Well done, Andrew. Your prize (and the hunt) awaits.`
+    },
+    {
+        type: "message",
+        text: `Well, well, well… look who’s made it this far 😉
+Welcome to the *actual* game.
+
+Here’s the deal: to complete this scavenger hunt, you’ll need to find a few places around Denver. Don’t worry — they’re not too far apart, I’m not that crazy 😏
+
+To solve each puzzle, you’ll need to decode riddles and get to the right location. Once you’re there, you have to take a picture as proof. You **cannot** move on until you’ve figured out the previous location *and* sent me the photo.
+
+You *can* ask for clues or hints — call or text me if you need to — but I can only answer **yes or no**, so think carefully before you ask.
+
+Ready… let’s see if you can handle it. 💋`
+    },
+    {
+        type: "riddle",
+        text: `Here's your first clue:
+The story started here,
+Do you recall where?
+Clocks were ticking, feet in race,
+But time stood still in that place.`,
+        answer: ["kachina cantina", "kachina"]
+    },
+    {
+        type: "message",
+        text: `Congratulations, Andrew… looks like you’ve made it to the first location! 🎉
+
+But don’t get too comfortable — I won’t make it *that* easy for you.
+Before you can move on to the next spot, you’ll need to solve the next riddle. 
+Are you ready? 😉`
+    },
+    {
+        type: "riddle",
+        text: `Here’s your next riddle, Andrew.
+Look closer… you might find something. 😉
+Anagram: A hug gut site`,
+        answer: ["august eight", "august 8", "08/08", "8/8"]
+    },
+    {
+        type: "text",
+        text: `Great! You got it… 🎉
+But what does this date mean?
+Tell me — in a few words, what happened on August 8? 😉`
+    },
+    {
+        type: "message",
+        text: `Mmm… I see you remember… someone’s paying *really* close attention 😉
+Well done, Andrew. You’re doing great so far!`
+    },
+    {
+        type: "riddle",
+        text: `Can you solve the riddle for the next location? 😉
+Beneath warm lights and echoing cheer,
+One often left the other in fear. 😉
+Seek where small spheres flew with might,
+And your next clue comes into sight.`,
+        answer: ["tap 14", "tap fourteen"]
+    }
+];
+
+function showStage() {
+    answerInput.classList.add("hidden");
+    textInput.classList.add("hidden");
+    submitBtn.classList.add("hidden");
+    let current = flow[stage];
+
+    if (current.type === "message") {
+        content.innerHTML = current.text.replace(/
+/g,"<br>");
+        stage++;
+        setTimeout(showStage, 500); // short delay before next
+    } else if (current.type === "riddle") {
+        content.innerHTML = current.text.replace(/
+/g,"<br>");
+        answerInput.value = "";
+        answerInput.classList.remove("hidden");
+        submitBtn.classList.remove("hidden");
+    } else if (current.type === "text") {
+        content.innerHTML = current.text.replace(/
+/g,"<br>");
+        textInput.value = "";
+        textInput.classList.remove("hidden");
+        submitBtn.classList.remove("hidden");
+    }
+}
+
+submitBtn.addEventListener("click", () => {
+    let current = flow[stage];
+    if (current.type === "riddle") {
+        let userAnswer = answerInput.value.trim().toLowerCase();
+        if (current.answer.includes(userAnswer)) {
+            stage++;
+            showStage();
+        } else {
+            alert("Hmm… that doesn’t seem right. Try again 😉");
+        }
+    } else if (current.type === "text") {
+        stage++;
+        showStage();
+    }
+});
+
+showStage();
+</script>
+</body>
+</html>
